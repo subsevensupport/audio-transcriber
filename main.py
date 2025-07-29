@@ -12,7 +12,8 @@ async def receive_webhook(request: Request):
 
     print("--- Webhook Received ---")
     print("Saving payload for inspection...")
-    with open("sample_payload.json", mode="w") as file:
+    print(payload.latest_message.attachments[0].media_type)
+    with open("sample_payload.json", mode="x") as file:
         json.dump(payload, file, indent=4)    
     print("----------------------")
 
