@@ -1,0 +1,150 @@
+{
+    "rule": {
+        "id": "38a93b61-ed87-4309-bddf-3e6495bbde4d",
+        "description": "Transcribe - Manual",
+        "type": "label_change"
+    },
+    "conversation": {
+        "id": "7f047bb1-7d05-45b6-9656-7b326b912f39",
+        "created_at": 1753455928,
+        "subject": null,
+        "latest_message_subject": "New call recording for Support hunt group.",
+        "organization": {
+            "id": "d331fcb2-f36a-4dca-af18-40cf88302e4f",
+            "name": "subseven"
+        },
+        "color": null,
+        "authors": [
+            {
+                "name": "Cloud PBX Call Recording",
+                "address": "recording@serverdata.net"
+            }
+        ],
+        "external_authors": [
+            {
+                "name": "Cloud PBX Call Recording",
+                "address": "recording@serverdata.net"
+            }
+        ],
+        "messages_count": 1,
+        "drafts_count": 0,
+        "send_later_messages_count": 0,
+        "attachments_count": 1,
+        "tasks_count": 0,
+        "completed_tasks_count": 0,
+        "users": [
+            {
+                "id": "1a0e138f-3d6c-4a1c-b62d-15b13d46938f",
+                "name": "Martynas Siuksta",
+                "email": "martin@serix.co",
+                "unassigned": false,
+                "closed": false,
+                "archived": true,
+                "trashed": true,
+                "junked": false,
+                "assigned": false,
+                "flagged": false,
+                "snoozed": false
+            },
+            {
+                "id": "3277c32c-babf-4979-b9cc-1c04807bb0c1",
+                "name": "Eric Mainardi",
+                "email": "emainardi@subseven.net",
+                "unassigned": false,
+                "closed": false,
+                "archived": true,
+                "trashed": true,
+                "junked": false,
+                "assigned": false,
+                "flagged": false,
+                "snoozed": false
+            },
+            {
+                "id": "75b874e2-2784-408a-95e0-2f767437ca0b",
+                "name": "Ray Haack",
+                "email": "rhaack@subseven.net",
+                "unassigned": false,
+                "closed": false,
+                "archived": true,
+                "trashed": true,
+                "junked": false,
+                "assigned": false,
+                "flagged": false,
+                "snoozed": false
+            }
+        ],
+        "assignees": [],
+        "assignee_names": "",
+        "assignee_emails": "",
+        "shared_label_names": "Transcribe",
+        "web_url": "https://mail.missiveapp.com/#inbox/conversations/7f047bb1-7d05-45b6-9656-7b326b912f39",
+        "app_url": "missive://mail.missiveapp.com/#inbox/conversations/7f047bb1-7d05-45b6-9656-7b326b912f39",
+        "closed_at": null,
+        "team": {
+            "id": "e80141fb-2ce6-4fef-b5c3-eff922e9daa7",
+            "name": "support",
+            "organization": "d331fcb2-f36a-4dca-af18-40cf88302e4f",
+            "active_members": [
+                "1a0e138f-3d6c-4a1c-b62d-15b13d46938f",
+                "3277c32c-babf-4979-b9cc-1c04807bb0c1",
+                "75b874e2-2784-408a-95e0-2f767437ca0b"
+            ],
+            "observers": []
+        },
+        "shared_labels": [
+            {
+                "id": "d2a6ddf4-00db-4ffb-b803-f0992f9a54f2",
+                "name": "Transcribe",
+                "name_with_parent_names": "Transcribe",
+                "organization": "d331fcb2-f36a-4dca-af18-40cf88302e4f",
+                "color": null,
+                "parent": null,
+                "share_with_organization": false,
+                "share_with_users": [
+                    "75b874e2-2784-408a-95e0-2f767437ca0b"
+                ],
+                "share_with_team": null,
+                "visibility": "organization"
+            }
+        ]
+    },
+    "latest_message": {
+        "id": "1d386f45-2d7a-cc5f-e538-c286d5c9c6a2",
+        "subject": "New call recording for Support hunt group.",
+        "preview": "New Call Recording Hello, A recording of the call is attached to this message. Please click on the attachment to play it on your computer. H",
+        "type": "email",
+        "delivered_at": 1753455923,
+        "updated_at": 1753455928,
+        "created_at": 1753455928,
+        "email_message_id": "<68839D23.04BFD2.DCD68@hpbx089-1.va>",
+        "in_reply_to": [],
+        "references": [],
+        "from_field": {
+            "name": "Cloud PBX Call Recording",
+            "address": "recording@serverdata.net"
+        },
+        "to_fields": [
+            {
+                "name": "222",
+                "address": "support@subseven.net"
+            }
+        ],
+        "cc_fields": [],
+        "bcc_fields": [],
+        "reply_to_fields": [],
+        "attachments": [
+            {
+                "id": "1de053c5-6b55-4991-ab35-40eb6bae818c",
+                "filename": "crhg_2025_Jul_25_11_03_39.mp3",
+                "extension": "mp3",
+                "url": "https://attachments-1.missiveapp.com/1de053c5-6b55-4991-ab35-40eb6bae818c/crhg_2025_Jul_25_11_03_39.mp3?Expires=1753791934&Signature=kQraQgQbIzPrqMZlPGwsvHPWcl~XcBGiQIS8TPy6KibPBIXONgES6WmwFPpTSWbWPlwA2MefSWLDwFp3M97pAQ3xl50URGr0Zb4tPtwMsjPCbS6X~6fxIhympT-kNdR5gZz1~sLCNg4ffbXtXPXOGeuWuJZvgSicugqZPjTXC102CrLYJNqg0SJXrnxldY6PR~CAvIaDKJqtfbqUahOA3gbxbzBnJi-Ua9sf5JxlLk1D8ltHhNcgw3L~DHWJRdHNhC2madfhZNOuxkfnula4~5jwZtFNSOBlp2y6Y5oW0foon7G~1XbWr1yngs2svaI5k-Nb3WQvoopI4CaIX~Efbw__&Key-Pair-Id=APKAJWJJOF7ZM5FW5N4Q",
+                "media_type": "audio",
+                "sub_type": "mpeg",
+                "size": 260710,
+                "width": null,
+                "height": null
+            }
+        ],
+        "author": null
+    }
+}
