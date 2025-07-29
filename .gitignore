@@ -1,0 +1,43 @@
+# --- Virtual Environment ---
+# Ignore the virtual environment folder
+venv/
+.venv/
+env/
+.env/
+
+# --- Python ---
+# Ignore Python bytecode and cache folders
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore packaging and distribution artifacts
+*.egg-info/
+.eggs/
+dist/
+build/
+wheels/
+
+# Ignore testing tool caches
+.pytest_cache/
+.tox/
+
+# --- IDE / Editor Files ---
+# Ignore VS Code specific settings
+.vscode/
+
+# --- Operating System Files ---
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Windows specific files
+Thumbs.db
+ehthumbs.db
+
+# --- Secrets & Configuration ---
+# Ignore files containing environment variables and secrets.
+# It's a best practice to commit a ".env.example" file instead.
+.env
+*.env
+.env.*
