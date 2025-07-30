@@ -4,9 +4,12 @@ import os
 import aiohttp
 from pydantic import BaseModel
 from typing import List, Optional
+from faster_whisper import WhisperModel
+import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logging.getLogger("faster_whisper").setLevel(logging.DEBUG)
 
 class Attachment(BaseModel):
     id: str
@@ -73,6 +76,46 @@ async def download_audio_file(attachment: Attachment) -> str:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                           detail=f"Failed to download audio file: {str(e)}")
 
+async def transcribe_audio(audio_path: str) -> dict:
+    """
+    Transcribes an audio file using Faster-Whisper following best practices.
+
+    Args:
+        audio_path: Path to the audio file to transcribe
+
+    Returns:
+        dict: Transcription results with segments and text
+
+    Raises:
+        HTTPException: If transcription fails
+    """
+    try:
+        model = WhisperModel("medium", device="cpu", compute_type="int8")
+        # TODO: separate model initialization from transcription to avoid reloading for each request
+        # TODO: test different model sizes and GPU usage
+
+        logger.info(f"Starting transcription for: {audio_path}")
+
+        segments, info = model.transcribe(audio_path, beam_size=5)
+
+        segments_list = list(segments) # converts generator to list, which runs the transcription
+
+        full_text_list = [segment.text for segment in segments_list]
+
+        transcription = {
+            "segments": segments_list,
+            "info": info,
+            "full_text": " ".join(full_text_list).strip()
+        }
+
+        logger.info(f"Transcription completed for: {audio_path}")
+        return transcription
+
+    except Exception as e:
+        logger.error(f"Transcription failed: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                          detail=f"Transcription failed: {str(e)}")
+
 async def process_audio_attachment(attachment: Attachment):
     """
     Background task to process an audio attachment.
@@ -83,12 +126,21 @@ async def process_audio_attachment(attachment: Attachment):
     logger.info(f"Processing audio attachment: {attachment.filename}")
 
     try:
-        # Download the audio file
         audio_path = await download_audio_file(attachment)
         logger.info(f"Audio file saved to: {audio_path}")
+        
+        transcription = await transcribe_audio(audio_path)        
 
-        # TODO: Implement transcription logic here
-        # This would be where we'd call Whisper or another transcription service
+        # Save transcription result to file
+        transcription_filename = os.path.join(
+            "data",
+            f"{attachment.id}_{os.path.splitext(attachment.filename)[0]}_transcription.txt"
+        )
+
+        with open(transcription_filename, 'w', encoding='utf-8') as f:
+            f.write(transcription['full_text'])
+
+        logger.info(f"Transcription saved to: {transcription_filename}")
 
     except HTTPException as e:
         logger.error(f"Error processing audio attachment: {e.detail}")
