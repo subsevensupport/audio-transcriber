@@ -1,0 +1,5 @@
+- [ ] beam.cloud
+- [ ] timestamps
+- [ ] speaker diarization (pyannote, sortformer)
+- [ ] voice activity detection (pyannote)
+- [ ] nvidia nemo models (parakeet-tdt-0.6b-v2, canary-1b-flash)

@@ -91,8 +91,6 @@ async def transcribe_audio(audio_path: str) -> dict:
     """
     try:
         model = WhisperModel("medium", device="cpu", compute_type="int8")
-        # TODO: separate model initialization from transcription to avoid reloading for each request
-        # TODO: test different model sizes and GPU usage
 
         logger.info(f"Starting transcription for: {audio_path}")
 
