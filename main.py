@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, BackgroundTasks
 import logging
+import os
+import aiohttp
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -30,8 +32,71 @@ class MissiveWebhook(BaseModel):
 
 app = FastAPI()
 
+async def download_audio_file(attachment: Attachment) -> str:
+    """
+    Downloads an audio file from a URL and saves it to the data directory.
+
+    Args:
+        attachment: The audio attachment containing the URL
+
+    Returns:
+        str: Path to the saved audio file
+
+    Raises:
+        HTTPException: If the download fails
+    """
+    try:
+        # Generate local filename
+        local_filename = os.path.join("data", f"{attachment.id}_{attachment.filename}")
+
+        # Download the file asynchronously with timeout
+        timeout = aiohttp.ClientTimeout(total=30)  # 30 second timeout
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.get(attachment.url) as response:
+                if response.status != 200:
+                    raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                      detail=f"Failed to download audio file: HTTP {response.status}")
+
+                # Save the file
+                with open(local_filename, 'wb') as f:
+                    while True:
+                        chunk = await response.content.read(8192)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+
+        logger.info(f"Successfully downloaded audio file: {local_filename}")
+        return local_filename
+
+    except Exception as e:
+        logger.error(f"Failed to download audio file: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                          detail=f"Failed to download audio file: {str(e)}")
+
+async def process_audio_attachment(attachment: Attachment):
+    """
+    Background task to process an audio attachment.
+
+    Args:
+        attachment: The audio attachment to process
+    """
+    logger.info(f"Processing audio attachment: {attachment.filename}")
+
+    try:
+        # Download the audio file
+        audio_path = await download_audio_file(attachment)
+        logger.info(f"Audio file saved to: {audio_path}")
+
+        # TODO: Implement transcription logic here
+        # This would be where we'd call Whisper or another transcription service
+
+    except HTTPException as e:
+        logger.error(f"Error processing audio attachment: {e.detail}")
+
+    logger.info(f"Finished processing audio attachment: {attachment.filename}")
+
 @app.post('/webhook', status_code=status.HTTP_202_ACCEPTED)
-async def receive_webhook(payload: MissiveWebhook) -> dict:
+async def receive_webhook(payload: MissiveWebhook, background_tasks: BackgroundTasks) -> dict:
     """
     Receives webhook from Missive, validates the data, and schedules background processing.
     Returns a success message if audio attachments are found, otherwise raises appropriate HTTP exceptions.
@@ -51,6 +116,7 @@ async def receive_webhook(payload: MissiveWebhook) -> dict:
     if not payload.latest_message:
         logger.error('No latest message found in payload')
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No message found. Nothing to process.")
+        # TODO: send an error message back to missive for these 204 codes
 
     attachments = payload.latest_message.attachments
     if not attachments:
@@ -64,7 +130,11 @@ async def receive_webhook(payload: MissiveWebhook) -> dict:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No audio attachments found. Nothing to transcribe.")
 
     logger.info(f"{len(audio_attachments)} audio attachment(s) found. Sending for transcription...")
-    # queue them for background processing
+
+    # Queue each audio attachment for background processing
+    for attachment in audio_attachments:
+        background_tasks.add_task(process_audio_attachment, attachment)
+
     return {
         "status": "success",
         "message": f"Found {len(audio_attachments)} audio attachments. Sent for transcription."

@@ -5,6 +5,9 @@ venv/
 env/
 .env/
 
+# Data files
+data/
+
 # --- Python ---
 # Ignore Python bytecode and cache folders
 __pycache__/
