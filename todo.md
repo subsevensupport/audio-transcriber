@@ -3,3 +3,4 @@
 - [ ] speaker diarization (pyannote, sortformer)
 - [ ] voice activity detection (pyannote)
 - [ ] nvidia nemo models (parakeet-tdt-0.6b-v2, canary-1b-flash)
+- [ ] any way to add background context to improve accuracy, like our business and names?
