@@ -90,7 +90,7 @@ async def transcribe_audio(audio_path: str) -> dict:
         HTTPException: If transcription fails
     """
     try:
-        model = WhisperModel("large", device="cpu", compute_type="float32")
+        model = WhisperModel("distil-large-v3", device="cpu", compute_type="float32")
 
         logger.info(f"Starting transcription for: {audio_path}")
 
