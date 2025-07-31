@@ -49,18 +49,17 @@ async def download_audio_file(attachment: Attachment) -> str:
         HTTPException: If the download fails
     """
     try:
-        # Generate local filename
         local_filename = os.path.join("data", f"{attachment.id}_{attachment.filename}")
 
-        # Download the file asynchronously with timeout
-        timeout = aiohttp.ClientTimeout(total=30)  # 30 second timeout
+        timeout = aiohttp.ClientTimeout(total=30)
         async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.get(attachment.url) as response:
                 if response.status != 200:
                     raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                                       detail=f"Failed to download audio file: HTTP {response.status}")
+                                      # TODO: troubleshoot 403 errors on some attachments
 
-                # Save the file
+                
                 with open(local_filename, 'wb') as f:
                     while True:
                         chunk = await response.content.read(8192)
@@ -106,6 +105,7 @@ async def transcribe_audio(audio_path: str) -> dict:
             "full_text": " ".join(full_text_list).strip()
         }
 
+        # TODO: cleanup audio file
         logger.info(f"Transcription completed for: {audio_path}")
         return transcription
 
@@ -129,7 +129,6 @@ async def process_audio_attachment(attachment: Attachment):
         
         transcription = await transcribe_audio(audio_path)        
 
-        # Save transcription result to file
         transcription_filename = os.path.join(
             "data",
             f"{attachment.id}_{os.path.splitext(attachment.filename)[0]}_transcription.txt"
@@ -181,7 +180,6 @@ async def receive_webhook(payload: MissiveWebhook, background_tasks: BackgroundT
 
     logger.info(f"{len(audio_attachments)} audio attachment(s) found. Sending for transcription...")
 
-    # Queue each audio attachment for background processing
     for attachment in audio_attachments:
         background_tasks.add_task(process_audio_attachment, attachment)
 
