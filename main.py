@@ -105,7 +105,6 @@ async def transcribe_audio(audio_path: str) -> dict:
             "full_text": " ".join(full_text_list).strip()
         }
 
-        # TODO: cleanup audio file
         logger.info(f"Transcription completed for: {audio_path}")
         return transcription
 
@@ -143,6 +142,10 @@ async def process_audio_attachment(attachment: Attachment):
         logger.error(f"Error processing audio attachment: {e.detail}")
 
     logger.info(f"Finished processing audio attachment: {attachment.filename}")
+
+    os.remove(audio_path)
+
+    return transcription['full_text']
 
 @app.post('/webhook', status_code=status.HTTP_202_ACCEPTED)
 async def receive_webhook(payload: MissiveWebhook, background_tasks: BackgroundTasks) -> dict:
