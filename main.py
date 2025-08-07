@@ -23,7 +23,7 @@ def load_models():
 @task_queue(
     on_start=load_models,
     name="audio-transcriber",
-    cpu=1,
+    cpu=2,
     memory="2Gi",
     gpu="T4",
     image=Image(
