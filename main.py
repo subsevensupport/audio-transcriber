@@ -64,6 +64,8 @@ def transcribe(context, audio_file_url, callback_data):
             for segment in segments:
                 text += segment.text + " "
 
+            text = text.strip()
+
             logger.info("Audio file transcribed successfully.")
             return {"transcription_text": text, "callback_data": callback_data}
         except Exception as e:
