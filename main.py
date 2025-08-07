@@ -70,4 +70,4 @@ def transcribe(context, audio_file_url, callback_data):
             return {"transcription_text": text, "callback_data": callback_data}
         except Exception as e:
             logger.error(f"Error transcribing audio file. Error: {e}")
-            return {"error": {e}}
+            return {"error": e}
