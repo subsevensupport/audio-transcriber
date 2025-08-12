@@ -36,7 +36,7 @@ def load_models():
             mount_path=BEAM_VOLUME_PATH,
         )
     ],
-    callback_url="https://0700e66112a8.ngrok-free.app/transcribe-callback",
+    callback_url="https://missive-relay.lab.subseven.net/transcribe-callback",
 )
 def transcribe(context, audio_file_url, callback_data):
     model = context.on_start_value
